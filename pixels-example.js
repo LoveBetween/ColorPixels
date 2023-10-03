@@ -82,12 +82,9 @@ window.onload = function() {
     }
     function addPixel(index, newIndex, yOffset, xOffset, count){
 
-        imagedata.data[newIndex] = 
-        imagedata.data[index] + Math.floor(Math.random() * 2*os) -os;
-        imagedata.data[newIndex+1] = 
-        imagedata.data[index+1] + Math.floor(Math.random() *  2*os) -os;
-        imagedata.data[newIndex+2] = 
-        imagedata.data[index+2] + Math.floor(Math.random() *  2*os) -os;
+        imagedata.data[newIndex] = imagedata.data[index] + Math.floor(Math.random() * 2*os) -os;
+        imagedata.data[newIndex+1] = imagedata.data[index+1] + Math.floor(Math.random() *  2*os) -os;
+        imagedata.data[newIndex+2] = imagedata.data[index+2] + Math.floor(Math.random() *  2*os) -os;
         imagedata.data[newIndex+3] = 255;;
         
         bitmap[count*3] = xOffset;
@@ -120,7 +117,7 @@ window.onload = function() {
                     
                     var newIndex = ( yOffset * width + xOffset ) * 4;
                     
-                    if(imagedata.data[newIndex+3] == 0){
+                    if(!xOffset>width && !!xoffset<0 && imagedata.data[newIndex+3] == 0){
                         addPixel(index,newIndex,yOffset,xOffset, count+z)
                         z++;count++;
                         added = true;
