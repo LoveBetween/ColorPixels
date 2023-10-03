@@ -35,6 +35,7 @@ window.onload = function() {
     // ------------------------------------------------------- // buttons
     function toggleShuffle(){
         shuffle = !shuffle;
+        console.log("toggling shuffle");
     }
     
 
@@ -119,7 +120,7 @@ window.onload = function() {
         for(var i=0; i< count && count< width*height;i++){
             if(bitmap[i*3+2]==1){
 
-                if(shuffle == true){
+                if(shuffle){
                     sC++;
                     if(sC<shuffleCycle){
                         shuffleArray(rdir);
