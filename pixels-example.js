@@ -8,10 +8,12 @@ window.onload = function() {
     var heightSlider = document.getElementById("height");
     var osSlider = document.getElementById("myRange");
     document.getElementById ("gen").addEventListener ("click", generate, false);
+    document.getElementById ("toggleShuffle").addEventListener ("click", toggleShuffle, false);
     osSlider.addEventListener ("change", setOffset, false);
     
     // Define the image dimensions
-    var shuffle = true;
+    var shuffle = false;
+    var shuffleCycle = 10;
     var width;
     var height;
     var rdir = [
@@ -29,6 +31,14 @@ window.onload = function() {
     var running = false;
     var os = osSlider.value;
     var imagedata;// Create an ImageData object
+    
+    // ------------------------------------------------------- // buttons
+    function toggleShuffle(){
+        shuffle = !shuffle;
+    }
+    
+
+    // ------------------------------------------------------- //
     
     function generate(){
         count = 1;
@@ -105,20 +115,28 @@ window.onload = function() {
         bitmap[count*3 +2] = 1;
     }
     function genPixel(){
+        var sC = 0;
         for(var i=0; i< count && count< width*height;i++){
             if(bitmap[i*3+2]==1){
-                if(shuffle == true)shuffleArray(rdir);
+
+                if(shuffle == true){
+                    sC++;
+                    if(sC<shuffleCycle){
+                        shuffleArray(rdir);
+                        sC = 0;
+                    }
+                }
                 var x = bitmap[i*3];
                 var y = bitmap[i*3+1];
-                var index = (y * width + x) * 4;
+                let index = (y * width + x) * 4;
 
-                var added = false;
+                let added = false;
                 
                 for(var j =0; j<8;j++){
-                    var xOffset = x + rdir[j][0];
-                    var yOffset = y + rdir[j][1];
+                    let xOffset = x + rdir[j][0];
+                    let yOffset = y + rdir[j][1];
                     
-                    var newIndex = ( yOffset * width + xOffset ) * 4;
+                    let newIndex = ( yOffset * width + xOffset ) * 4;
                     
                     if(xOffset<width && xOffset>-1 && imagedata.data[newIndex+3] == 0){
                         addPixel(index,newIndex,yOffset,xOffset, count)
