@@ -117,7 +117,7 @@ window.onload = function() {
                     
                     var newIndex = ( yOffset * width + xOffset ) * 4;
                     
-                    if(xOffset<width-1 && xOffset>-1 && imagedata.data[newIndex+3] == 0){
+                    if(xOffset<width && xOffset>-1 && imagedata.data[newIndex+3] == 0){
                         
                         addPixel(index,newIndex,yOffset,xOffset, count+z)
                         z++;count++;
