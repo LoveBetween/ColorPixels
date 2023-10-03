@@ -11,24 +11,24 @@ window.onload = function() {
     osSlider.addEventListener ("change", setOffset, false);
     
     // Define the image dimensions
+    var shuffle = true;
     var width;
     var height;
-    var directions = [
-        1,-1,
-        1,0,
-        1,1,
-        0,-1,
-        0,1,
-        -1,-1,
-        -1,0,
-        -1,1];
+    var rdir = [
+        [-1,1],
+        [1,-1],
+        [1,0],
+        [1,1],
+        [0,-1],
+        [0,1],
+         [-1,-1],
+        [-1,0]];
 
     var bitmap;
     var count;
     var running = false;
     var os = osSlider.value;
-    var imagedata;
-    // Create an ImageData object
+    var imagedata;// Create an ImageData object
     
     function generate(){
         count = 1;
@@ -36,6 +36,13 @@ window.onload = function() {
         setup();
         running = true;
         main(0);
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
     }
 
     function setOffset(){
@@ -58,6 +65,7 @@ window.onload = function() {
         }
     }
     function setup(){
+        shuffleArray(rdir);
         canvas.width = widthSlider.value;
         canvas.height = heightSlider.value;
         console.log
@@ -81,46 +89,40 @@ window.onload = function() {
         
     }
     function addPixel(index, newIndex, yOffset, xOffset, count){
-
-        imagedata.data[newIndex] = imagedata.data[index] + Math.floor(Math.random() * 2*os) -os;
-        imagedata.data[newIndex+1] = imagedata.data[index+1] + Math.floor(Math.random() *  2*os) -os;
-        imagedata.data[newIndex+2] = imagedata.data[index+2] + Math.floor(Math.random() *  2*os) -os;
-        imagedata.data[newIndex+3] = 255;;
-        
+        if(Math.random() > 0.5){
+            imagedata.data[newIndex] = imagedata.data[index] + Math.ceil(Math.random() * 2*os -os); // Red
+            imagedata.data[newIndex+1] = imagedata.data[index+1] + Math.ceil( Math.random() *  2*os -os); // Green
+            imagedata.data[newIndex+2] = imagedata.data[index+2] + Math.ceil(Math.random() *  2*os -os); // Blue
+        }
+        else {
+            imagedata.data[newIndex] = imagedata.data[index] + Math.floor(Math.random() * 2*os -os); // Red
+            imagedata.data[newIndex+1] = imagedata.data[index+1] + Math.floor( Math.random() *  2*os -os); // Green
+            imagedata.data[newIndex+2] = imagedata.data[index+2] + Math.floor(Math.random() *  2*os -os); // Blue
+        }
+        imagedata.data[newIndex+3] = 255; // Alpha
         bitmap[count*3] = xOffset;
         bitmap[count*3 +1] = yOffset;
         bitmap[count*3 +2] = 1;
     }
     function genPixel(){
-        var z = 0;
-
-        for(var i=0; i< count && (count+z)< (width*height);i++){
+        for(var i=0; i< count && count< width*height;i++){
             if(bitmap[i*3+2]==1){
-                var dir = directions.slice();
-                var rdir =[];
-                for(var j = 8; j>0;j--){
-                    var r = Math.floor(Math.random() * j);
-                    rdir.push(dir[r*2]);
-                    rdir.push(dir[r*2+1]);
-                    dir.splice(r*2,2);
-                }
+                if(shuffle == true)shuffleArray(rdir);
                 var x = bitmap[i*3];
                 var y = bitmap[i*3+1];
                 var index = (y * width + x) * 4;
 
                 var added = false;
                 
-                for(var j =0; j<16;j+=2){
-                    
-                    var xOffset = x + rdir[j];
-                    var yOffset = y + rdir[j+1];
+                for(var j =0; j<8;j++){
+                    var xOffset = x + rdir[j][0];
+                    var yOffset = y + rdir[j][1];
                     
                     var newIndex = ( yOffset * width + xOffset ) * 4;
                     
                     if(xOffset<width && xOffset>-1 && imagedata.data[newIndex+3] == 0){
-                        
-                        addPixel(index,newIndex,yOffset,xOffset, count+z)
-                        z++;count++;
+                        addPixel(index,newIndex,yOffset,xOffset, count)
+                        count++;
                         added = true;
                         break;
                     }
