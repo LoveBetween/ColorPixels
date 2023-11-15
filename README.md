@@ -1,2 +1,2 @@
 # ColorPixels
-https://lovebetween.github.io/JSMazes/
+https://lovebetween.github.io/ColorPixels/
