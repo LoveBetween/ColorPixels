@@ -7,18 +7,23 @@
 </head>
 <body>
 
-<div class="slidecontainer">
+<div>
   <button id="toggleShuffle" class="dropbtn">- Toggle Shuffle -</button>
+  <span id="firstSpan"></span>
+</div> 
+<div>
   <button id="toggleGreyScale" class="dropbtn">- Toggle GreyScale -</button>
-    <input type="range" min="1" max="32" value="3" class="slider" id="myRange"> Variance </input>
-  </div> 
-  <div>
+</div>
+<div>
   <input type="number" id="width" name="width" value="400" required
-  minlength="1" maxlength="5" size="10">  width</input>
+  minlength="1" maxlength="5" size="6">  width</input>
 </div>
 <div>
   <input type="number" id="height" name="height" value="400" required
-  minlength="1" maxlength="5" size="10">  height</input>
+  minlength="1" maxlength="5" size="6">  height</input>
+</div>
+<div>
+  <input type="number" min="1" max="1000" value="3" class="slider" id="myRange" size="6" > Variance </input>
 </div>
 <div>
 <button id="gen">Generate image</button>
