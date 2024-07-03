@@ -8,10 +8,25 @@ window.onload = function() {
     var heightSlider = document.getElementById("height");
     var osSlider = document.getElementById("myRange");
     let span = document.getElementById("firstSpan");
+
+    var isGenerated = false
+
     document.getElementById ("gen").addEventListener ("click", generate, false);
     document.getElementById ("toggleShuffle").addEventListener ("click", toggleShuffle, false);
     document.getElementById ("toggleGreyScale").addEventListener ("click", toggleGreyScale, false);
     osSlider.addEventListener ("change", setOffset, false);
+
+    document.querySelector('#download').addEventListener('click', ()=> {
+        if (!isGenerated) return false;
+        var canvas = document.querySelector("#viewport");
+        var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        
+        var element = document.createElement('a');
+        var filename = 'image.png';
+        element.setAttribute('href', image);
+        element.setAttribute('download', filename);
+        element.click();
+    })
 
     
     // Define the image dimensions
@@ -37,7 +52,7 @@ window.onload = function() {
         [1,1],
         [0,-1],
         [0,1],
-         [-1,-1],
+        [-1,-1],
         [-1,0]];
 
     var bitmap;
@@ -56,18 +71,19 @@ window.onload = function() {
     }
     
     function displayDegrees(){
-         span.textContent = "seed: "+printArr(rdir);
+        span.textContent = "seed: "+printArr(rdir);
     }
     function printArr(arr) {
         let str = "";
-          for (let item of arr) {
+        for (let item of arr) {
             str+="["+item[0]+","+item[1]+"];";
-          }
-          return str.slice(0,-1);
+        }
+        return str.slice(0,-1);
         }
     // ------------------------------------------------------- //
     
     function generate(){
+        isGenerated = true
         count = 1;
         createImage();
         setup();
